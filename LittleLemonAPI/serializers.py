@@ -3,6 +3,7 @@ from .models import MenuItem
 
 
 
+
 class MenuItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuItem
@@ -10,4 +11,5 @@ class MenuItemSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             
         }
+        read_only_fields = ['id']
 #C'est incroyable, il faut que je révise les notions sur les serializers

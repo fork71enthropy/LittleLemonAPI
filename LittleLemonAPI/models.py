@@ -58,7 +58,20 @@ class OrderItem(models.Model):
 
 
 
+"""
+User class: 
 
+
+    username
+
+    password
+
+    email
+
+    first_name
+
+    last_name
+"""
 
 
 

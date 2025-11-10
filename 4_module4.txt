@@ -63,3 +63,82 @@ Je dois maintenant tester les accès avec chaque groupe d'utilisateurs
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1: meats
+2: pasta
+3: salads
+4: desserts
+5: drinks
+
+
+
+
+
+
+{ "title": "Margherita Pizza", "price": "8.90", "featured": true, "category": 2 }
+{ "title": "Spaghetti", "price": "11.50", "featured": false, "category": 2 }
+{ "title": "Chicken Shawarma", "price": "9.80", "featured": true, "category": 1 }
+{ "title": "Grilled Salmon", "price": "14.90", "featured": false, "category": 1 }
+{ "title": "Beef Steak", "price": "19.50", "featured": true, "category": 1 }
+{ "title": "Caesar Salad", "price": "7.90", "featured": true, "category": 3 }
+{ "title": "Greek Salad", "price": "7.40", "featured": false, "category": 3 }
+{ "title": "Tiramisu", "price": "5.20", "featured": true, "category": 4 }
+{ "title": "Chocolate Mousse", "price": "4.80", "featured": false, "category": 4 }
+{ "title": "Lemon Tart", "price": "4.90", "featured": false, "category": 4 }
+{ "title": "Fresh Orange Juice", "price": "3.50", "featured": true, "category": 5 }
+{ "title": "Iced Tea", "price": "2.90", "featured": false, "category": 5 }
+{ "title": "Espresso", "price": "2.20", "featured": false, "category": 5 }
+{ "title": "Roasted Chicken", "price": "12.40", "featured": true, "category": 1 }
+{ "title": "Penne", "price": "9.20", "featured": false, "category": 2 }
+{ "title": "Fettuccine Alfredo", "price": "9.80", "featured": true, "category": 2 }
+{ "title": "Chow Mein", "price": "8.60", "featured": false, "category": 3 }
+{ "title": "Berry Cheesecake", "price": "6.50", "featured": true, "category": 4 }
+{ "title": "Mango Juice", "price": "3.90", "featured": true, "category": 5 }
+{ "title": "Veggie Burger", "price": "9.60", "featured": true, "category": 1 }
+
+
+
+
+
+
+
+
+
+
+
+
+{ "title": "Beef Tacos", "price": "10.20", "featured": false, "category": 1 }
+{ "title": "BBQ Ribs", "price": "14.80", "featured": true, "category": 1 }
+{ "title": "Sushi Roll", "price": "11.30", "featured": false, "category": 2 }
+{ "title": "Pad Thai", "price": "10.90", "featured": true, "category": 2 }
+{ "title": "Falafel Wrap", "price": "7.50", "featured": false, "category": 3 }
+{ "title": "Greek Gyro", "price": "8.70", "featured": true, "category": 3 }
+{ "title": "Carrot Cake", "price": "5.20", "featured": true, "category": 4 }
+{ "title": "Brownie Sundae", "price": "6.80", "featured": false, "category": 4 }
+{ "title": "Strawberry Smoothie", "price": "4.90", "featured": true, "category": 5 }
+{ "title": "Iced Green Tea", "price": "3.40", "featured": false, "category": 5 }
+
+
+
+
+
