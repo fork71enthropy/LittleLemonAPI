@@ -1,0 +1,65 @@
+Final Project Assessment : build an api for the Little Lemon Restaurant =
+	an online-based order management system and mobile application
+	
+-client can browse food items, view the item of the day and place orders
+-managers can update the item of the day, monitor orders and assign deliveries
+-delivery crew can check ordrs assigned to them, update an order once it's delivered
+
+--> We will use class based views
+
+--> Plan of our api project
+
+->create db models for the drf projects, identify relationships between models
+MODELS:
+MenuItem,User,
+
+
+GROUPS/USERS:
+clients/customers,managers,delivery_crew
+
+
+-------------->Plan:
+1)User registration and authentication process : /api/users
+Bien, première partie terminée
+
+2)Assign to groups : /api/users/{userID}/groups; what type of token is required for this endpoint ? 
+3)manager roles: can use some apis endpoints : 
+	edit menu:	/api/menu-items/
+	update user role:	/api/users/{userID}/groups
+4)customer roles: can browse menu items, filter them by categories and price ranges, search menu items, 
+	add to cart : /api/users/{userID}/cart/menu-items
+	place order : /api/orders
+	flush cart : /api/users/{userID}/cart
+	1 customer <=> 1 cart <=> 1 to n menu-items
+5)Delivery process: api endpoints for the managers :
+
+	browse,assign: 
+	/api/orders
+	/api/orders/{orderID}  -----> all orders (manager token)
+				
+	filter: 
+	/api/orders?status=delivered
+	/api/orders?status=pending -------> filtered orders (manager token)
+			
+	browse,mark:
+	/api/orders
+	/api/orders/{orderID} -------> all orders (delivery person token)
+	
+	view own orders:
+	/api/orders -------> all orders (customer token)
+
+6)Throttling: 5 api calls per minutes
+	-api endpoints should support only the required http methods
+	-should return only the appropriate status code with the response
+	-the finished project should only support token based authentication
+	
+//Personnel
+Je dois maintenant tester les accès avec chaque groupe d'utilisateurs
+
+
+
+
+
+
+
+
