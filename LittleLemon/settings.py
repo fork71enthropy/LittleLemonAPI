@@ -143,6 +143,11 @@ REST_FRAMEWORK = {
 DJOSER = {
     "USER_ID_FIELD": "username",
     "LOGIN_FIELD": "email",
+
+    "SERIALIZERS":{
+        "user": "LittleLemonAPI.serializers.CustomUserSerializer",
+        "current_user": "LittleLemonAPI.serializers.CustomUserSerializer",
+    }
 }
 
 

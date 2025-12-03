@@ -133,7 +133,7 @@ Je dois maintenant tester les accès avec chaque groupe d'utilisateurs
 { "title": "Pad Thai", "price": "10.90", "featured": true, "category": 2 }
 { "title": "Falafel Wrap", "price": "7.50", "featured": false, "category": 3 }
 { "title": "Greek Gyro", "price": "8.70", "featured": true, "category": 3 }
-{ "title": "Carrot Cake", "price": "5.20", "featured": true, "category": 4 }
+{ "title": "Carrot Cake", "price": "5.20", "feartured": true, "category": 4 }
 { "title": "Brownie Sundae", "price": "6.80", "featured": false, "category": 4 }
 { "title": "Strawberry Smoothie", "price": "4.90", "featured": true, "category": 5 }
 { "title": "Iced Green Tea", "price": "3.40", "featured": false, "category": 5 }
@@ -142,3 +142,60 @@ Je dois maintenant tester les accès avec chaque groupe d'utilisateurs
 
 
 
+
+02/12/2025
+J'aurai dû continuer avec les views functions et non les views class, 
+je sais que les views class sont assez génériques et permettent de faire plus de choses, mais on va rester sur les views functions pour s'entrainer
+et faire comme dans le cours, je préfère ca en plus. 
+Maintenant je dois réécrire les menu-items views et être sûr que j'ai gardé
+les mêmes fonctionnalités, ca rique d'être assez rapide
+
+
+
+
+
+    //C'est ici que j'ajoute les paramètres pour désactiver les suggestions de GitHub Copilot Next et de VSCode
+    "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true 
+    },
+    "editor.inlineSuggest.enabled": false,
+    "editor.parameterHints.enabled": false,
+    "github.copilot.inlineSuggest.enable": true,
+    //Je pense qu'on est bon là-dessus
+
+
+
+--> Lol c'est la première fois que quelquechose m'obéit au doigt et à 
+l'oeil, je kiffe ca !
+
+
+
+
+
+
+
+
+API calls:
+
+
+
+
+http://127.0.0.1:8000/api/auth/users/me
+---->to know who is the user
+
+http://127.0.0.1:8000/api/ api-token-auth 
+---->to generate access tokens that can be used in other api calls
+
+http://127.0.0.1:8000/api/auth/users
+--> to see all users or the actual users (depends on authorizations)
+
+http://127.0.0.1:8000/api/menu-items
+--> to perform a http request
+
+http://127.0.0.1:8000/api/groups/manager/users
+--> retourne tous les managers du moment que ce soit un manager qui fait le get
+
+http://127.0.0.1:8000/api/groups/delivery-crew/users
+--> retourne tous les membres du delivery crew du moment que ce soit un manager qui fait le get
