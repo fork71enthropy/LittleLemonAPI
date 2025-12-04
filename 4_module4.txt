@@ -199,3 +199,8 @@ http://127.0.0.1:8000/api/groups/manager/users
 
 http://127.0.0.1:8000/api/groups/delivery-crew/users
 --> retourne tous les membres du delivery crew du moment que ce soit un manager qui fait le get
+
+http://127.0.0.1:8000/api/cart/menu-items
+---> retourne tous les menu-items d'une carte associée à un user
+Le payload c'est user(en cours) et menuitem
+

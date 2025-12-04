@@ -20,8 +20,9 @@ urlpatterns = [
 
     path('groups/delivery-crew/users',views.delivery_crew_post_get),
     path('groups/delivery-crew/users/<int:id>',views.delete_delivery_member),
-    
-    
+
+    #fourth functionnality (cart management endpoints)
+    path('cart/menu-items',views.cart_management),
     
 ]
 

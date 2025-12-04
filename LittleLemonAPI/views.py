@@ -3,17 +3,15 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth.models import Group
-from .models import MenuItem
+from django.contrib.auth.models import Group,User
+from .models import MenuItem,CartItem
 from .serializers import MenuItemSerializer
 #j'importe les classes de permissions et pour les views functions, ca m'énerve de devoir changer de style de 
 #programmation pour ces nouvelles fonctionnalités
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404 
-from rest_framework import status 
-from django.contrib.auth.models import User,Group
-from .serializers import ManagerGroupSerializer
-from .serializers import CustomUserSerializer
+from .serializers import ManagerGroupSerializer,CustomUserSerializer,CartItemSerializer,CartItemCreateSerializer
+ 
 
 
 
@@ -240,45 +238,59 @@ A faire à 17h30 le 03/12/2025
 Cart Management Endpoints à écrire; ca m'a l'air vraiment facile à faire 
 """
 
+"""
+GET : return current items in the cart for the current token of the user
+"""
+@api_view(['GET','POST','DELETE'])
+@permission_classes([IsAuthenticated])
+def cart_management(request):
+    """
+    api/cart/menu-items
+    GET : Returns current items in the cart for the current user token
+    POST : Adds the menu item to the cart. Sets the authenticated user as the user id for these cart items
+    """ 
+    #2)
+    if request.method == 'GET':
+        items = CartItem.objects.filter(user=request.user)
+        serializer = CartItemSerializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
+    #fonctionnalité POST
+    if request.method == 'POST':
+        serializer = CartItemCreateSerializer(data=request.data,context={'request': request})
+        if serializer.is_valid():
+            cart_item = serializer.save()
+            menuitem_id = cart_item.menuitem.id 
+            return Response( f"Item {menuitem_id} successfully added", status=status.HTTP_201_CREATED)
 
-
-
-
-
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    #fonctionnalité DELETE
+    if request.method == 'DELETE':
+        try:
+            items = CartItem.objects.filter(user=request.user)
+            items.delete()
+            return Response( {"detail":"all items were successfully deleted"}, status=status.HTTP_204_NO_CONTENT)
+        except CartItem.DoesNotExist:
+            return Response(
+                {"detail": "Cart Items not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        except:
+            return Response({"message":"Ca pue la merde, tu devrais vérifier ce que tu as écrit"})
 
 
 
 #revoir la vidéo sur les users roles
-#10/11/2025, 13h25
-
-
-
+#Il faut que je prenne plus de risques lorsque je code ! Essais des choses, c'est comme ca qu'on apprend
 
 """
-
- People with different roles will be able to browse, add and edit menu items,
-   place orders, browse orders, assign delivery crew 
-   to orders and finally deliver the orders. 
-
+Dernière fonctionnalité, les endpoints pour les orders des clients, ca m'a l'air facile.
+A faire le 04/12/2025 à 15h30
 """
+ 
 
 
-"""    def get_permissions(self):
-        if self.request.method in ["POST", "PUT", "PATCH", "DELETE"]:
-            # Allow only managers
-            if not self.request.user.groups.filter(name="manager").exists():
-                return Response({"message":"Only managers are authorized"},
-                                status=status.HTTP_403_FORBIDDEN)
-            return super().get_permissions()"""
-
-
-"""
-class ManagerGroupView(generics.ListCreateAPIView):
-    queryset = User.objects.filter(groups__name="manager")
-    serializer_class = ManagerGroupSerializer  # To be implemented
-    permission_classes = [IsAuthenticated,IsManager]
-"""
 
 
 
@@ -292,23 +304,8 @@ menu-items endpoints avec les permissions correspondantes.
 Je passe aux User group management endpoints maintenant !
 """
 
-"""
-A faire pour ce soir 02/12/2025: 
-"""
-#TODO: Ajouter une condition dans mon serializer pour qu'un manager puisse
-#transformer un utilisateur normal en manager et vice versa.
-#Le manager enverra un payload post vers l'endpoint http://127.0.0.1:8000/api/groups/manager/users
-#avec le "username" de l'utilisateur à promouvoir/démouvoir. 
-#J'avoue que c'est assez bête car plusieurs users peuvent avoir le même username.
-#Il faudrait plutôt utiliser l'email ou l'id de l'utilisateur, surtout l'email vu qu'on a pas l'id
-#dans le payload. Comme tous les utilisateurs n'ont pas d'email, on va utiliser le username pour l'instant.
-"""
-exemple de payload pour promouvoir un utilisateur en manager ou le démouvoir
-{
-"username": "Aminata"	
-}
-"""
+ 
 
-"""
-Je pense que je vais devoir réécrire les menu_items endpoints en mode views functions
-"""
+
+ 
+ 

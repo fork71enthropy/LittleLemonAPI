@@ -20,15 +20,19 @@ class MenuItem(models.Model):
     def __str__(self):
         return self.title
 
-class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+# Donc cart est un item du panier
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) #with the user_id
     menuitem = models.ForeignKey(MenuItem,on_delete=models.CASCADE)
     quantity = models.SmallIntegerField()
     unit_price = models.DecimalField(max_digits=6,decimal_places=2)
     price = models.DecimalField(max_digits=6,decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ['menuitem','user']
+
     #Meta class is used to configure the model; 
 class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
