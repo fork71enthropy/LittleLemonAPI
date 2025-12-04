@@ -204,3 +204,6 @@ http://127.0.0.1:8000/api/cart/menu-items
 ---> retourne tous les menu-items d'une carte associée à un user
 Le payload c'est user(en cours) et menuitem
 
+http://127.0.0.1:8000/api/orders
+GET:returns all orders with order items created by this user
+POST:

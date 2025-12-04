@@ -23,6 +23,9 @@ urlpatterns = [
 
     #fourth functionnality (cart management endpoints)
     path('cart/menu-items',views.cart_management),
+
+    #fith functionnality (order management endpoints)
+    path('orders',views.order_management),
     
 ]
 

@@ -30,6 +30,9 @@ class CartItem(models.Model):
     price = models.DecimalField(max_digits=6,decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.menuitem.title
+
     class Meta:
         unique_together = ['menuitem','user']
 
@@ -40,10 +43,15 @@ class Order(models.Model):
                                       ,null=True,related_name="delivery_crew")
     status = models.BooleanField(db_index=True, default=0)
     total = models.DecimalField(max_digits=6, decimal_places=2)
-    date = models.DateField(db_index=True)
+    date = models.DateField(auto_now_add=True)
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(User,on_delete=models.CASCADE)
+    #order = models.ForeignKey(User,on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='order_items'   # ← clé pour le nested serializer
+    )
     menuitem = models.ForeignKey(MenuItem,on_delete=models.CASCADE)
     quantity = models.SmallIntegerField()
     unit_price = models.DecimalField(max_digits=6,decimal_places=2)
@@ -79,7 +87,10 @@ User class:
 
 
 
-
+"""
+Mon tuteur a raté le modèle, elle aurait dû mettre un model cart et un model cartitem, mais c'est trop tard, 
+on va avancer comme ca et livrer ce qu'il y'a à livrer
+"""
 
 
 

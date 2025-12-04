@@ -4,13 +4,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import Group,User
-from .models import MenuItem,CartItem
+from .models import MenuItem,CartItem,Order,OrderItem
 from .serializers import MenuItemSerializer
 #j'importe les classes de permissions et pour les views functions, ca m'énerve de devoir changer de style de 
 #programmation pour ces nouvelles fonctionnalités
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404 
 from .serializers import ManagerGroupSerializer,CustomUserSerializer,CartItemSerializer,CartItemCreateSerializer
+from .serializers import OrderSerializer
+
  
 
 
@@ -207,7 +209,7 @@ def delete_delivery_member(request,id):
         """
 
 
-        # 3) Récupérer le groupe manager
+        # 3) Récupérer le delivery_crew group
         delivery_crew = get_object_or_404(Group, name="delivery_crew")
         
 
@@ -288,23 +290,96 @@ def cart_management(request):
 Dernière fonctionnalité, les endpoints pour les orders des clients, ca m'a l'air facile.
 A faire le 04/12/2025 à 15h30
 """
- 
 
+@api_view(['GET','POST','DELETE'])
+@permission_classes([IsAuthenticated])
+def order_management(request):
+    """
+    GET : return all orders with order items created by this user (we identify a user with it token)
 
+    POST : Creates a new order item for the current user. Gets current cart items from the cart endpoints 
+    and adds those items to the order items table. Then deletes all items from the cart for this user.
 
+    GET for manager : Returns all orders with order items by all users
 
+    GET for delivery_crew : Returns all orders with order items assigned to the delivery crew
 
+    """
+    # 1) Seul un manager peut retirer un autre manager
+    is_manager = request.user.groups.filter(name="manager").exists()
+    is_delivery_crew = request.user.groups.filter(name="delivery_crew").exists()
 
-"""
-19h53, 01/12/2025, j'ai enfin terminé la première partie
-C'est un truc de fou que le mois soit en train de se terminer ! Je viens de terminer les 
-menu-items endpoints avec les permissions correspondantes.
-"""
-"""
-Je passe aux User group management endpoints maintenant !
-"""
+    user = request.user
+    
+    if not is_manager and (not is_delivery_crew): #Un simple user
+        #Cas de la méthode GET
+        if request.method == 'GET':
+            orders = Order.objects.filter(user=user)
+            serializer = OrderSerializer(orders, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        #Dorénavant c'est sous ce format que j'écrirai mes apis pour ne plus avoir de problèmes !
+            
+        #On passe à la méthode POST
+        if request.method == 'POST':
+            # 1) Récupérer tous les items du cart pour cet user
+            cart_items = CartItem.objects.filter(user=user)
 
- 
+            if not cart_items.exists():
+                return Response("Your cart is empty.",status=status.HTTP_400_BAD_REQUEST)
+
+            # 2) Calculer le total de la commande
+            total = 0
+            for item in cart_items: 
+                total += item.price #ou item.quantity * item.unit_price
+                
+            # 3) Créer l'Order pour cet utilisateur
+            order = Order.objects.create(
+                user=user,
+                total=total,
+            )
+            """
+            Remarque:
+            On ne passe à Order.objects.create(...) que les champs 
+            qui ne peuvent pas être déduits ou remplis automatiquement.
+            """
+            # 4) Créer l'Order pour cet utilisateur
+            order = Order.objects.create(
+            user=user,
+            total=total,
+            )
+
+            # 5) Pour chaque CartItem → créer un OrderItem lié à cet Order
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    menuitem=item.menuitem,
+                    quantity=item.quantity,
+                    unit_price=item.unit_price,
+                    price=item.price,
+                )
+            
+            # 6) Vider le panier (supprimer tous les CartItem de cet user)
+            cart_items.delete()
+
+            # 7) Sérialiser et renvoyer la commande créée
+            serializer = OrderSerializer(order)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    elif is_manager:#Returns all orders with order items by all users
+        #Cas de la méthode GET
+        if request.method == 'GET':
+            orders = Order.objects.all()
+            serializer = OrderSerializer(orders, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    #Returns all orders with order items assigned to the delivery crew
+    #je ne peux pas encore le faire car je dois d'abord écrire la fonction d'assignement d'un order 
+    #vers un delivery_guy
+    elif is_delivery_crew:
+        if request.method == 'GET':
+            orders = Order.objects.filter(groups__name="delivery_crew")
+            serializer = OrderSerializer(orders, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 
  
