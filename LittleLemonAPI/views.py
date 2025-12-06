@@ -357,7 +357,8 @@ def order_management(request):
                     unit_price=item.unit_price,
                     price=item.price,
                 )
-            
+
+            #T7E2RMhWJ35Nzjz9jW
             # 6) Vider le panier (supprimer tous les CartItem de cet user)
             cart_items.delete()
 
@@ -383,4 +384,8 @@ def order_management(request):
 
 
  
- 
+def specific_order(request,id):
+    """
+    GET (Customer): Returns all items for this order id. If the order ID doesn’t belong to the current user, 
+    it displays an appropriate HTTP error status code.
+    """

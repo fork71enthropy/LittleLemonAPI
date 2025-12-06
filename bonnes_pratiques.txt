@@ -3,3 +3,16 @@ Dès que l'on modifie le fichier models.py,
 # depuis le dossier où se trouve manage.py
 python manage.py makemigrations
 python manage.py migrate
+
+
+	Comment Débugger en django ? Voici une méthodologie simple
+
+1)
+
+2)
+
+3)
+
+4)
+
+5)

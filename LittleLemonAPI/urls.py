@@ -26,7 +26,7 @@ urlpatterns = [
 
     #fith functionnality (order management endpoints)
     path('orders',views.order_management),
-    
+    path('orders/<int:id>',views.specific_order),
 ]
 
 
